@@ -3,8 +3,8 @@
     public abstract class AuditableBaseEntity : BaseEntity, ICreatableEntity, IDeletableEntity, IUpdatableEntity
     {
         #region ICreatableEntity
-        public string CreatedBy { get; init; }
-        public DateTime CreatedDate { get; init; }
+        public string CreatedBy { get; set; }
+        public DateTime CreatedDate { get; set; }
         #endregion
 
         #region IDeletableEntity

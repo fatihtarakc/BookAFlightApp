@@ -2,7 +2,7 @@
 {
     public interface ICreatableEntity
     {
-        string CreatedBy { get; init; }
-        DateTime CreatedDate { get; init; }
+        string CreatedBy { get; set; }
+        DateTime CreatedDate { get; set; }
     }
 }
