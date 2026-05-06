@@ -3,11 +3,11 @@
     public class BookAFlightAppDbContext : IdentityDbContext<IdentityUser, IdentityRole, string>
     {
         private readonly IHttpContextAccessor? httpContextAccessor;
-        //public BookAFlightAppDbContext() { }
         public BookAFlightAppDbContext(DbContextOptions<BookAFlightAppDbContext> options, IHttpContextAccessor httpContextAccessor = null) : base(options)
         {
             this.httpContextAccessor = httpContextAccessor;
         }
+        public BookAFlightAppDbContext(DbContextOptions<BookAFlightAppDbContext> options) : base(options) { }
 
         public virtual DbSet<Admin>? Admins { get; set; }
         public virtual DbSet<Aircraft>? Aircrafts { get; set; }
