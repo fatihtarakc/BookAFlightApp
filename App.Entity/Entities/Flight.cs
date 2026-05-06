@@ -8,6 +8,7 @@
         }
 
         public string Number { get; set; }
+        public string AirlineCode { get; set; }
         public string Airline { get; set; }
         public DateTime DepartureDateTime { get; set; }
         public DateTime ArrivalDateTime { get; set; }

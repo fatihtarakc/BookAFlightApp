@@ -7,6 +7,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "App.Core", "App.Core\App.Co
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "App.Entity", "App.Entity\App.Entity.csproj", "{5384EC1D-910A-4CB6-8549-06FDED565288}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "App.Entities.Configurations", "App.Entities.Configurations\App.Entities.Configurations.csproj", "{8B4F1445-BB33-46FC-B792-F603C6700315}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -21,6 +23,10 @@ Global
 		{5384EC1D-910A-4CB6-8549-06FDED565288}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{5384EC1D-910A-4CB6-8549-06FDED565288}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{5384EC1D-910A-4CB6-8549-06FDED565288}.Release|Any CPU.Build.0 = Release|Any CPU
+		{8B4F1445-BB33-46FC-B792-F603C6700315}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{8B4F1445-BB33-46FC-B792-F603C6700315}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{8B4F1445-BB33-46FC-B792-F603C6700315}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{8B4F1445-BB33-46FC-B792-F603C6700315}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
