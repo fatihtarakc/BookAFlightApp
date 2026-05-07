@@ -1,0 +1,20 @@
+﻿global using Microsoft.Extensions.Configuration;
+global using Microsoft.Extensions.DependencyInjection;
+global using Microsoft.Extensions.Localization;
+global using Microsoft.Extensions.Logging;
+global using Microsoft.Extensions.Options;
+global using Newtonsoft.Json;
+global using RabbitMQ.Client;
+global using RabbitMQ.Client.Events;
+global using System.Text;
+
+global using App.Business.Services.Abstract;
+global using App.Core.Constants;
+global using App.Core.Options;
+global using App.Core.Resources;
+global using App.Core.Utilities.Results.Abstract;
+global using App.Core.Utilities.Results.Concrete;
+global using App.Dtos.EmailDtos;
+global using App.Queue.Constants;
+global using App.Queue.Services.Abstract;
+global using App.Queue.Services.Concrete;
