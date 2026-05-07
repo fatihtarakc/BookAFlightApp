@@ -15,6 +15,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "App.DataAccess.Abstract", "
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "App.DataAccess.Concrete", "App.DataAccess.Concrete\App.DataAccess.Concrete.csproj", "{5DD216BF-BA99-4ED1-A8DB-2E2516E37BA2}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "App.Cache", "App.Cache\App.Cache.csproj", "{890690B9-3C70-4A27-922A-46647DF8C06C}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -45,6 +47,10 @@ Global
 		{5DD216BF-BA99-4ED1-A8DB-2E2516E37BA2}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{5DD216BF-BA99-4ED1-A8DB-2E2516E37BA2}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{5DD216BF-BA99-4ED1-A8DB-2E2516E37BA2}.Release|Any CPU.Build.0 = Release|Any CPU
+		{890690B9-3C70-4A27-922A-46647DF8C06C}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{890690B9-3C70-4A27-922A-46647DF8C06C}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{890690B9-3C70-4A27-922A-46647DF8C06C}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{890690B9-3C70-4A27-922A-46647DF8C06C}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
