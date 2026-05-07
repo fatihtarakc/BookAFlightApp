@@ -64,21 +64,5 @@
 
             return new ErrorResult(result.Message);
         }
-
-        public async Task<IResult> SendingEmailForPasswordChangeVerificationCodeAsync(EmailForVerificationCodeDto emailForVerificationCodeDto)
-        {
-            var result = await SendAsync(new EmailDto(emailForVerificationCodeDto.To, emailForVerificationCodeDto.EmailTo, $"{stringLocalizer[Messages.EmailTitle_Has_Been_Sent_For_PasswordChangeVerificationCode]} {emailForVerificationCodeDto.To},", stringLocalizer[Messages.EmailSubject_Has_Been_Sent_For_PasswordChangeVerificationCode], $"{stringLocalizer[Messages.EmailContent_Has_Been_Sent_For_PasswordChangeVerificationCode]}: {emailForVerificationCodeDto.VerificationCode}\n{DateTime.Now.ToShortDateString()} {DateTime.Now.ToShortTimeString()}"));
-            if (result.IsSuccess) return new SuccessResult(result.Message);
-
-            return new ErrorResult(result.Message);
-        }
-
-        public async Task<IResult> SendingEmailForTwoFactorAuthenticationVerificationCodeAsync(EmailForVerificationCodeDto emailForVerificationCodeDto)
-        {
-            var result = await SendAsync(new EmailDto(emailForVerificationCodeDto.To, emailForVerificationCodeDto.EmailTo, $"{stringLocalizer[Messages.EmailTitle_Has_Been_Sent_For_TwoFactorAuthenticationVerificationCode]} {emailForVerificationCodeDto.To},", stringLocalizer[Messages.EmailSubject_Has_Been_Sent_For_TwoFactorAuthenticationVerificationCode], $"{stringLocalizer[Messages.EmailContent_Has_Been_Sent_For_TwoFactorAuthenticationVerificationCode]}: {emailForVerificationCodeDto.VerificationCode}\n{DateTime.Now.ToShortDateString()} {DateTime.Now.ToShortTimeString()}"));
-            if (result.IsSuccess) return new SuccessResult(result.Message);
-
-            return new ErrorResult(result.Message);
-        }
     }
 }
