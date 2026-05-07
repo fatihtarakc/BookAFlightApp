@@ -17,6 +17,10 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "App.DataAccess.Concrete", "
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "App.Cache", "App.Cache\App.Cache.csproj", "{890690B9-3C70-4A27-922A-46647DF8C06C}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "App.Business", "App.Business\App.Business.csproj", "{0772589D-7673-4767-B82D-6935400F07F7}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "App.Dtos", "App.Dtos\App.Dtos.csproj", "{D3796142-3ABA-411D-9117-9CF9C910D24D}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -51,6 +55,14 @@ Global
 		{890690B9-3C70-4A27-922A-46647DF8C06C}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{890690B9-3C70-4A27-922A-46647DF8C06C}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{890690B9-3C70-4A27-922A-46647DF8C06C}.Release|Any CPU.Build.0 = Release|Any CPU
+		{0772589D-7673-4767-B82D-6935400F07F7}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{0772589D-7673-4767-B82D-6935400F07F7}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{0772589D-7673-4767-B82D-6935400F07F7}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{0772589D-7673-4767-B82D-6935400F07F7}.Release|Any CPU.Build.0 = Release|Any CPU
+		{D3796142-3ABA-411D-9117-9CF9C910D24D}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{D3796142-3ABA-411D-9117-9CF9C910D24D}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{D3796142-3ABA-411D-9117-9CF9C910D24D}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{D3796142-3ABA-411D-9117-9CF9C910D24D}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
