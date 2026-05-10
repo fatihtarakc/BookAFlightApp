@@ -6,7 +6,8 @@
         {
             base.Configure(builder);
 
-            builder.Property(aircraft => aircraft.Type).HasColumnType("nvarchar").HasMaxLength(20).IsRequired();
+            builder.HasIndex(aircraft => aircraft.TailNumber).IsUnique();
+            builder.Property(aircraft => aircraft.TailNumber).HasColumnType("nvarchar").HasMaxLength(20).IsRequired();
             builder.ToTable(aircraft => aircraft.HasCheckConstraint("Type_MinLength_Control", "Len(Type) >= 2"));
 
             builder.Property(aircraft => aircraft.IsReserved).HasDefaultValue(false);

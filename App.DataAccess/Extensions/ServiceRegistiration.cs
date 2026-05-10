@@ -9,13 +9,11 @@
             services.Configure<ConnectionOptions>
                 (configuration.GetSection(ConnectionOptions.Connections));
 
-            var serviceProvider = services.BuildServiceProvider();
-            var connectionOptions = serviceProvider.GetRequiredService<IOptions<ConnectionOptions>>().Value;
-            //var connectionOptions = configuration.GetSection(ConnectionOptions.Connections).Get<ConnectionOptions>();
+            var connectionOptions = configuration.GetSection(ConnectionOptions.Connections).Get<ConnectionOptions>();
             services.AddDbContext<BookAFlightAppDbContext>(dbContextOptionsBuilder =>
             {
                 dbContextOptionsBuilder.UseLazyLoadingProxies();
-                dbContextOptionsBuilder.UseSqlServer(connectionOptions.MssqlServer,
+                dbContextOptionsBuilder.UseSqlServer(connectionOptions?.MssqlServer,
                     sqlServerDbContextOptionsBuilder => sqlServerDbContextOptionsBuilder.EnableRetryOnFailure(10, TimeSpan.FromSeconds(10), null));
             });
 

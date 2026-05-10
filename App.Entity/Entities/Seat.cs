@@ -4,7 +4,7 @@
     {
         public Seat()
         {
-            Bookings = new HashSet<Booking>();
+            FlightSeats = new HashSet<FlightSeat>();
         }
 
         public string AircraftIdSeatNumberColumn { get; set; }
@@ -14,7 +14,7 @@
 
         // Relations
         public Guid AircraftId { get; set; }
-        public Aircraft Aircraft { get; set; }
-        public virtual ICollection<Booking> Bookings { get; set; }
+        public virtual Aircraft Aircraft { get; set; }
+        public virtual ICollection<FlightSeat> FlightSeats { get; set; }
     }
 }

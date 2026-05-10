@@ -13,6 +13,8 @@
             builder.ToTable(seat => seat.HasCheckConstraint("NumberCheckConstraint", "Number >= 1 And Number <= 150"));
 
             builder.Property(seat => seat.IsReserved).HasDefaultValue(false);
+
+            builder.HasOne(seat => seat.Aircraft).WithMany(aircraft => aircraft.Seats).HasForeignKey(seat => seat.AircraftId).OnDelete(DeleteBehavior.Restrict);
         }
     }
 }

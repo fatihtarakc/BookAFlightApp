@@ -2,7 +2,7 @@
 {
     public static class ServiceRegistiration
     {
-        public static IServiceCollection AddBusinessConcreteServices(this IServiceCollection services, IConfiguration configuration)
+        public static IServiceCollection AddBusinessServices(this IServiceCollection services, IConfiguration configuration)
         {
             services.AddScoped<IAccountService, AccountService>();
             services.AddScoped<IAdminService, AdminService>();

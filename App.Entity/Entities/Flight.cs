@@ -4,7 +4,7 @@
     {
         public Flight() 
         {
-            Bookings = new HashSet<Booking>();
+            FlightSeats = new HashSet<FlightSeat>();
         }
 
         public string Number { get; set; }
@@ -19,9 +19,9 @@
 
         // Relations
         public Guid AircraftId { get; set; }
-        public Aircraft Aircraft { get; set; }
+        public virtual Aircraft Aircraft { get; set; }
         public Guid RouteId { get; set; }
-        public Route Route { get; set; }
-        public virtual ICollection<Booking> Bookings { get; set; }
+        public virtual Route Route { get; set; }
+        public virtual ICollection<FlightSeat> FlightSeats { get; set; }
     }
 }

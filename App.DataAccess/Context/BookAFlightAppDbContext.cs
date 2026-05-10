@@ -7,7 +7,6 @@
         {
             this.httpContextAccessor = httpContextAccessor;
         }
-        public BookAFlightAppDbContext(DbContextOptions<BookAFlightAppDbContext> options) : base(options) { }
 
         public virtual DbSet<Admin>? Admins { get; set; }
         public virtual DbSet<Aircraft>? Aircrafts { get; set; }
@@ -18,16 +17,10 @@
         public virtual DbSet<Route>? Routes { get; set; }
         public virtual DbSet<Seat>? Seats { get; set; }
 
-        //protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
-        //{
-        //    base.OnConfiguring(optionsBuilder);
-        //    optionsBuilder.UseSqlServer("Server=localhost, 1434; Database=BookAFlightDb; User=sa; Password=Dockermssqldb2024+-!?; TrustServerCertificate=True;");
-        //}
-
         protected override void OnModelCreating(ModelBuilder builder)
         {
             base.OnModelCreating(builder);
-            builder.ApplyConfigurationsFromAssembly(Assembly.GetExecutingAssembly());
+            builder.ApplyConfigurationsFromAssembly(typeof(IEntityConfiguration).Assembly);
         }
 
         public override Task<int> SaveChangesAsync(CancellationToken cancellationToken = default)

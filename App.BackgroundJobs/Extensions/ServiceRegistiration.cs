@@ -7,9 +7,7 @@
             services.Configure<ConnectionOptions>
                 (configuration.GetSection(ConnectionOptions.Connections));
 
-            var serviceProvider = services.BuildServiceProvider();
-            var connectionOptions = serviceProvider.GetRequiredService<IOptions<ConnectionOptions>>().Value;
-            //var connectionOptions = configuration.GetSection(ConnectionOptions.Connections).Get<ConnectionOptions>();
+            var connectionOptions = configuration.GetSection(ConnectionOptions.Connections).Get<ConnectionOptions>();
             services.AddHangfire(configuration =>
             {
                 configuration.UseSqlServerStorage(connectionOptions.Hangfire);
@@ -31,7 +29,7 @@
         {
             applicationBuilder.UseHangfireDashboard(pathMatch, new DashboardOptions
             {
-                DashboardTitle = "Library Hangfire DashBoard",
+                DashboardTitle = "BookAFlightApp Hangfire DashBoard",
                 Authorization = new[] { new HangfireAuthorizationFilter() }
             });
 

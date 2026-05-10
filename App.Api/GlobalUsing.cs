@@ -1,0 +1,22 @@
+﻿global using FluentValidation;
+global using FluentValidation.AspNetCore;
+global using Microsoft.AspNetCore.Authentication.Cookies;
+global using Microsoft.AspNetCore.Localization;
+global using Microsoft.AspNetCore.Mvc;
+global using Microsoft.AspNetCore.Identity;
+global using System.ComponentModel.DataAnnotations;
+global using System.Globalization;
+global using System.Reflection;
+
+global using App.Api.Extensions;
+global using App.BackgroundJobs.Extensions;
+global using App.Business.Services.Abstract;
+global using App.Business.Extensions;
+global using App.Cache.Extensions;
+global using App.Core.Enums;
+global using App.Core.Constants;
+global using App.DataAccess.Concrete.Extensions;
+global using App.DataAccess.Extensions;
+global using App.Dtos.AppUserDtos;
+global using App.Entity.Entities;
+global using App.Queue.Extensions;

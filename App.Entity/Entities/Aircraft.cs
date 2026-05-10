@@ -8,7 +8,7 @@
             Seats = new HashSet<Seat>();
         }
 
-        public string Type { get; set; }
+        public string TailNumber { get; set; }
         public bool IsReserved { get; set; }
 
         // Relations

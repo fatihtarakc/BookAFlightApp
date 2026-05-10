@@ -9,13 +9,11 @@
             services.Configure<ConnectionOptions>
                 (configuration.GetSection(ConnectionOptions.Connections));
 
-            var serviceProvider = services.BuildServiceProvider();
-            var connectionOptions = serviceProvider.GetRequiredService<IOptions<ConnectionOptions>>().Value;
-            //var connectionOptions = configuration.GetSection(ConnectionOptions.Connections).Get<ConnectionOptions>();
+            var connectionOptions = configuration.GetSection(ConnectionOptions.Connections).Get<ConnectionOptions>();
             services.AddStackExchangeRedisCache(options =>
             {
                 options.Configuration = configuration.GetConnectionString(connectionOptions.Redis);
-                options.InstanceName = "BookAFlight-RedisInstance";
+                options.InstanceName = "BookAFlightAppDb-Redis";
             });
 
             return services;

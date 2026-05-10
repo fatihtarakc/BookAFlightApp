@@ -23,6 +23,9 @@
             builder.ToTable(flight => flight.HasCheckConstraint("BasePriceCheckConstraint", "BasePrice > 0"));
 
             builder.Property(flight => flight.FlightStatus).HasDefaultValue(FlightStatus.Scheduled);
+
+            builder.HasOne(flight => flight.Aircraft).WithMany(aircraft => aircraft.Flights).HasForeignKey(flight => flight.AircraftId).OnDelete(DeleteBehavior.Restrict);
+            builder.HasOne(flight => flight.Route).WithMany(route => route.Flights).HasForeignKey(flight => flight.RouteId).OnDelete(DeleteBehavior.Restrict);
         }
     }
 }

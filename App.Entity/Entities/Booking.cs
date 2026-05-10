@@ -7,10 +7,8 @@
 
         // Relations
         public Guid AppUserId { get; set; }
-        public AppUser AppUser { get; set; }
-        public Guid FlightId { get; set; }
-        public Flight Flight { get; set; }
-        public Guid SeatId { get; set; }
-        public Seat Seat { get; set; }
+        public virtual AppUser AppUser { get; set; }
+        public Guid FlightSeatId { get; set; }
+        public virtual FlightSeat FlightSeat { get; set; }
     }
 }

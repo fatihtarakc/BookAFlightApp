@@ -14,7 +14,7 @@
         public string Country { get; set; }
 
         // Relations
-        public ICollection<Route> DepartureRoutes { get; set; }
-        public ICollection<Route> ArrivalRoutes { get; set; }
+        public virtual ICollection<Route> DepartureRoutes { get; set; }
+        public virtual ICollection<Route> ArrivalRoutes { get; set; }
     }
 }

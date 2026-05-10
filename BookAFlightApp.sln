@@ -25,6 +25,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "App.Queue", "App.Queue\App.
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "App.BackgroundJobs", "App.BackgroundJobs\App.BackgroundJobs.csproj", "{5D9760DF-8B59-4384-ADE2-BE1F725BB686}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "App.Api", "App.Api\App.Api.csproj", "{133A1799-31D9-4A68-B767-D91ECE4780E6}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -75,6 +77,10 @@ Global
 		{5D9760DF-8B59-4384-ADE2-BE1F725BB686}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{5D9760DF-8B59-4384-ADE2-BE1F725BB686}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{5D9760DF-8B59-4384-ADE2-BE1F725BB686}.Release|Any CPU.Build.0 = Release|Any CPU
+		{133A1799-31D9-4A68-B767-D91ECE4780E6}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{133A1799-31D9-4A68-B767-D91ECE4780E6}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{133A1799-31D9-4A68-B767-D91ECE4780E6}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{133A1799-31D9-4A68-B767-D91ECE4780E6}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
