@@ -8,17 +8,21 @@
 
             builder.HasIndex(airport => airport.Name).IsUnique();
             builder.Property(airport => airport.Name).HasColumnType("nvarchar").HasMaxLength(50).IsRequired();
-            builder.ToTable(airport => airport.HasCheckConstraint("Name_MinLength_Control", "Len(Name) >= 3"));
+            builder.ToTable(airport => airport.HasCheckConstraint("CK_Airport_Name_Pattern_Control", "Name not like '%[^A-Za-z0-9ğüşıöçĞÜŞİÖÇ &-]%' and Len(Name) >= 3"));
 
-            builder.HasIndex(airport => airport.Code).IsUnique();
-            builder.Property(airport => airport.Code).HasColumnType("nvarchar").HasMaxLength(4).IsRequired();
-            builder.ToTable(airport => airport.HasCheckConstraint("Code_MinLength_Control", "Len(Code) >= 2"));
+            builder.HasIndex(airport => airport.IataCode).IsUnique();
+            builder.Property(airport => airport.IataCode).HasColumnType("nvarchar").HasMaxLength(3).IsRequired();
+            builder.ToTable(airport => airport.HasCheckConstraint("CK_Airport_IataCode_Pattern_Control", "IataCode not like '%[^A-Z]%' and Len(IataCode) = 3"));
+
+            builder.HasIndex(airport => airport.IcaoCode).IsUnique();
+            builder.Property(airport => airport.IcaoCode).HasColumnType("nvarchar").HasMaxLength(4).IsRequired();
+            builder.ToTable(airport => airport.HasCheckConstraint("CK_Airport_IcaoCode_Pattern_Control", "IcaoCode not like '%[^A-Z]%' and Len(IcaoCode) = 4"));
 
             builder.Property(airport => airport.City).HasColumnType("nvarchar").HasMaxLength(50).IsRequired();
-            builder.ToTable(airport => airport.HasCheckConstraint("City_MinLength_Control", "Len(City) >= 2"));
+            builder.ToTable(airport => airport.HasCheckConstraint("CK_Airport_City_Pattern_Control", "City not like '%[^A-Za-z0-9ğüşıöçĞÜŞİÖÇ &-]%' and Len(City) >= 2"));
 
             builder.Property(airport => airport.Country).HasColumnType("nvarchar").HasMaxLength(50).IsRequired();
-            builder.ToTable(airport => airport.HasCheckConstraint("Country_MinLength_Control", "Len(Country) >= 2"));
+            builder.ToTable(airport => airport.HasCheckConstraint("CK_Airport_Country_Pattern_Control", "Country not like '%[^A-Za-z0-9ğüşıöçĞÜŞİÖÇ &-]%' and Len(Country) >= 2"));
         }
     }
 }

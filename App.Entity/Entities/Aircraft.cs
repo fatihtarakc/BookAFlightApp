@@ -9,9 +9,17 @@
         }
 
         public string TailNumber { get; set; }
-        public bool IsReserved { get; set; }
+        public AircraftStatus AircraftStatus { get; set; }
+
+        //public int TotalSeats => Seats.Count;
+        //public int EconomySeats => Seats.Count(s => s.SeatClass == SeatClass.Economy);
+        //public int BusinessSeats => Seats.Count(s => s.SeatClass == SeatClass.Business);
 
         // Relations
+        public Guid AirlineId { get; set; }
+        public virtual Airline Airline { get; set; }
+        public Guid ModelId { get; set; }
+        public virtual Model Model { get; set; }
         public virtual ICollection<Flight> Flights { get; set; }
         public virtual ICollection<Seat> Seats { get; set; }
     }

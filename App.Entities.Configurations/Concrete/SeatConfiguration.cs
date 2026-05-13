@@ -6,13 +6,11 @@
         {
             base.Configure(builder);
 
-            builder.HasIndex(seat => seat.AircraftIdSeatNumberColumn).IsUnique();
-            builder.Property(seat => seat.AircraftIdSeatNumberColumn).HasColumnType("nvarchar").HasMaxLength(40).IsRequired();
-            builder.ToTable(seat => seat.HasCheckConstraint("AircraftIdSeatNumberColumn_MinLength_Control", "Len(AircraftIdSeatNumberColumn) >= 38"));
+            builder.HasIndex(seat => new { seat.AircraftId, seat.Number, seat.SeatColumn }).IsUnique();
 
-            builder.ToTable(seat => seat.HasCheckConstraint("NumberCheckConstraint", "Number >= 1 And Number <= 150"));
+            builder.ToTable(seat => seat.HasCheckConstraint("CK_Seat_Number_Control", "Number >= 1 And Number <= 150"));
 
-            builder.Property(seat => seat.IsReserved).HasDefaultValue(false);
+            builder.Property(seat => seat.SeatClass).HasDefaultValue(SeatClass.Economy);
 
             builder.HasOne(seat => seat.Aircraft).WithMany(aircraft => aircraft.Seats).HasForeignKey(seat => seat.AircraftId).OnDelete(DeleteBehavior.Restrict);
         }

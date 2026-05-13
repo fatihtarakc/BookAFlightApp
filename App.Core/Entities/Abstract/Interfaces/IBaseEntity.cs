@@ -3,6 +3,6 @@
     public interface IBaseEntity
     {
         Guid Id { get; set; }
-        Status Status { get; set; }
+        EntityStatus EntityStatus { get; set; }
     }
 }

@@ -8,24 +8,20 @@
 
             builder.HasIndex(flight => flight.Number).IsUnique();
             builder.Property(flight => flight.Number).HasColumnType("nvarchar").HasMaxLength(6).IsRequired();
-            builder.ToTable(flight => flight.HasCheckConstraint("Number_MinLength_Control", "Len(Number) >= 3"));
+            builder.ToTable(flight => flight.HasCheckConstraint("CK_Flight_Number_Pattern_Control", "Number not like '%[^A-Z0-9]%' and Len(Number) >= 3"));
+            
+            builder.ToTable(flight => flight.HasCheckConstraint("CK_Flight_Duration_Control", "ArrivalDateTime > DepartureDateTime"));
 
-            builder.Property(flight => flight.AirlineCode).HasColumnType("nvarchar").HasMaxLength(2).IsRequired();
-            builder.ToTable(flight => flight.HasCheckConstraint("AirlineCode_Length_Control", "Len(AirlineCode) = 2"));
+            builder.Property(flight => flight.BasePrice).HasColumnType("decimal(18,2)").IsRequired();
+            builder.ToTable(flight => flight.HasCheckConstraint("CK_Flight_BasePrice_Min_Control", "BasePrice > 0"));
 
-            builder.Property(flight => flight.Airline).HasColumnType("nvarchar").HasMaxLength(50).IsRequired();
-            builder.ToTable(flight => flight.HasCheckConstraint("Airline_MinLength_Control", "Len(Airline) >= 5"));
-
-            builder.ToTable(flight => flight.HasCheckConstraint("DurationMinutesCheckConstraint", "DurationMinutes > 0"));
-
-            builder.Property(flight => flight.ArrivalDateTime).HasComputedColumnSql("DATEADD(minute, DurationMinutes, DepartureDateTime)", stored: true);
-
-            builder.ToTable(flight => flight.HasCheckConstraint("BasePriceCheckConstraint", "BasePrice > 0"));
+            builder.Property(flight => flight.Currency).HasDefaultValue(Currency.TL);
 
             builder.Property(flight => flight.FlightStatus).HasDefaultValue(FlightStatus.Scheduled);
 
             builder.HasOne(flight => flight.Aircraft).WithMany(aircraft => aircraft.Flights).HasForeignKey(flight => flight.AircraftId).OnDelete(DeleteBehavior.Restrict);
-            builder.HasOne(flight => flight.Route).WithMany(route => route.Flights).HasForeignKey(flight => flight.RouteId).OnDelete(DeleteBehavior.Restrict);
+            builder.HasOne(flight => flight.Airline).WithMany(airline => airline.Flights).HasForeignKey(flight => flight.AirlineId).OnDelete(DeleteBehavior.Restrict);
+            builder.HasOne(flight => flight.Schedule).WithMany(schedule => schedule.Flights).HasForeignKey(flight => flight.ScheduleId).OnDelete(DeleteBehavior.Restrict);
         }
     }
 }

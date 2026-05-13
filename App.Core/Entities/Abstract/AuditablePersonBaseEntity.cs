@@ -4,5 +4,8 @@
     {
         public string Email { get; init; }
         public string IdentityId { get; init; }
+
+        // Relations
+        public string AspNetUsersId { get; init; }
     }
 }

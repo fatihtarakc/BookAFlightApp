@@ -7,7 +7,7 @@
             builder.HasKey(baseEntity => baseEntity.Id);
             builder.Property(baseEntity => baseEntity.Id).ValueGeneratedOnAdd();
 
-            builder.Property(baseEntity => baseEntity.Status).HasDefaultValue(Status.Added);
+            builder.Property(baseEntity => baseEntity.EntityStatus).HasDefaultValue(EntityStatus.Added);
         }
     }
 }

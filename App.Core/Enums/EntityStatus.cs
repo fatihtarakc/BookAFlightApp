@@ -1,6 +1,6 @@
 ﻿namespace App.Core.Enums
 {
-    public enum Status
+    public enum EntityStatus
     {
         Added = 1,
         Deleted,

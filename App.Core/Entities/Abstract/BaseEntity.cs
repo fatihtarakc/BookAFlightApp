@@ -3,6 +3,6 @@
     public abstract class BaseEntity : IBaseEntity
     {
         public Guid Id { get; set; }
-        public Status Status { get; set; }
+        public EntityStatus EntityStatus { get; set; }
     }
 }

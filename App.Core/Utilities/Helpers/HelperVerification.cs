@@ -2,7 +2,7 @@
 {
     public static class HelperVerification
     {
-        private static char[] digits = "0123456789".ToCharArray();
+        private static readonly char[] digits = "0123456789".ToCharArray();
         public static string CodeGenerator(int length = 6)
         {
             var random = new Random();

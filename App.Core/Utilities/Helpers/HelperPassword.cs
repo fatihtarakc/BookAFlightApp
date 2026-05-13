@@ -2,10 +2,10 @@
 {
     public static class HelperPassword
     {
-        private static char[] upperCharacters = "ABCDEFGHIJKLMNOPQRSTUVWXYZ".ToCharArray();
-        private static char[] lowerCharacters = "abcdefghijklmnopqrstuvwxyz".ToCharArray();
-        private static char[] digits = "0123456789".ToCharArray();
-        private static char[] symbols = { '!', '@', '#', '$', '%', '^', '&', '*', '(', ')', '-', '_', '=', '+', '[', ']', '{', '}', '\\', '|', ';', ':', '\'', '\"', ',', '.', '<', '>', '/', '?', '`', '~' };
+        private static readonly char[] upperCharacters = "ABCDEFGHIJKLMNOPQRSTUVWXYZ".ToCharArray();
+        private static readonly char[] lowerCharacters = "abcdefghijklmnopqrstuvwxyz".ToCharArray();
+        private static readonly char[] digits = "0123456789".ToCharArray();
+        private static readonly char[] symbols = { '!', '@', '#', '$', '%', '^', '&', '*', '(', ')', '-', '_', '=', '+', '[', ']', '{', '}', '\\', '|', ';', ':', '\'', '\"', ',', '.', '<', '>', '/', '?', '`', '~' };
         public static string Generator(int length = 8)
         {
             var random = new Random();

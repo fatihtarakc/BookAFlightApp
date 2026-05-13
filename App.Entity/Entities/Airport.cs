@@ -9,7 +9,8 @@
         }
 
         public string Name { get; set; }
-        public string Code { get; set; }
+        public string IataCode { get; set; }
+        public string IcaoCode { get; set; }
         public string City { get; set; }
         public string Country { get; set; }
 
