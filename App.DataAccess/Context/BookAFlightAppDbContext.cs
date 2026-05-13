@@ -46,7 +46,7 @@
         {
             if (entityEntry.State is not EntityState.Added) return;
 
-            entityEntry.Entity.Status = EntityStatus.Added;
+            entityEntry.Entity.EntityStatus = EntityStatus.Added;
             entityEntry.Entity.CreatedDate = DateTime.Now;
 
             if (entityEntry.Entity is Admin) entityEntry.Entity.CreatedBy = "super admin";
@@ -57,7 +57,7 @@
         {
             if (entityEntry.State is not EntityState.Modified) return;
 
-            entityEntry.Entity.Status = EntityStatus.Updated;
+            entityEntry.Entity.EntityStatus = EntityStatus.Updated;
             entityEntry.Entity.ModifiedDate = DateTime.Now;
 
             if (entityEntry.Entity is Admin) entityEntry.Entity.ModifiedBy = "super admin";
@@ -70,7 +70,7 @@
 
             entityEntry.State = EntityState.Modified;
 
-            entityEntry.Entity.Status = EntityStatus.Deleted;
+            entityEntry.Entity.EntityStatus = EntityStatus.Deleted;
             entityEntry.Entity.DeletedDate = DateTime.Now;
 
             if (entityEntry.Entity is Admin) entityEntry.Entity.DeletedBy = "super admin";

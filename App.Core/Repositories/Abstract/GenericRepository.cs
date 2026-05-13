@@ -13,7 +13,7 @@
         }
 
         protected IQueryable<Entity> GetAllByStatusIsNotDeletedByTracking(bool tracking = true) =>
-            tracking ? dbEntity.Where(entity => entity.Status != EntityStatus.Deleted) : (dbEntity.Where(entity => entity.Status != EntityStatus.Deleted)).AsNoTracking();
+            tracking ? dbEntity.Where(entity => entity.EntityStatus != EntityStatus.Deleted) : (dbEntity.Where(entity => entity.EntityStatus != EntityStatus.Deleted)).AsNoTracking();
 
         #region IAsyncAddableRepository<Entity>
         public async ValueTask<Entity> AddAsync(Entity entity) =>
