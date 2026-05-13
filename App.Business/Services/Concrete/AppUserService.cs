@@ -21,10 +21,10 @@
         public async Task<IDataResult<AppUserDto>> AddAsync(AppUserAddDto appUserAddDto)
         {
             if (await accountService.AnyAsync(identityUser => identityUser.Email == appUserAddDto.Email))
-                return new ErrorDataResult<AppUserDto>(stringLocalizer[Messages.Account_Email_Has_Already_Been_Exist]);
+                return new ErrorDataResult<AppUserDto>(stringLocalizer[Messages.Account_Email_Has_Already_Existed]);
 
             if (await accountService.AnyAsync(identityUser => identityUser.UserName == appUserAddDto.Username))
-                return new ErrorDataResult<AppUserDto>(stringLocalizer[Messages.Account_Username_Has_Already_Been_Exist]);
+                return new ErrorDataResult<AppUserDto>(stringLocalizer[Messages.Account_Username_Has_Already_Existed]);
 
             IdentityUser identityUser = new()
             {
@@ -54,7 +54,7 @@
                     await appUserRepository.AddAsync(appUser);
                     await unitOfWork.SaveChangesAsync();
 
-                    await cacheService.SetCacheAsync($"AppUser_{appUser.Id}", appUser, TimeSpan.FromSeconds(30));
+                    await cacheService.AddAsync($"AppUser_{appUser.Id}", appUser, TimeSpan.FromSeconds(30));
                     result = new SuccessDataResult<AppUserDto>(appUser.Adapt<AppUserDto>(), stringLocalizer[Messages.AppUser_HasBeen_Added]);
                 }
                 catch (Exception exception)

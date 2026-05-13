@@ -6,9 +6,6 @@
         {
             services.AddScoped((typeof(ICacheService<>)), typeof(CacheService<>));
 
-            services.Configure<ConnectionOptions>
-                (configuration.GetSection(ConnectionOptions.Connections));
-
             var connectionOptions = configuration.GetSection(ConnectionOptions.Connections).Get<ConnectionOptions>();
             services.AddStackExchangeRedisCache(options =>
             {

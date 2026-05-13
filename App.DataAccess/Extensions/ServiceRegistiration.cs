@@ -4,10 +4,14 @@
     {
         public static IServiceCollection AddDataAccessServices(this IServiceCollection services, IConfiguration configuration)
         {
-            services.AddHttpContextAccessor();
-
             services.Configure<ConnectionOptions>
                 (configuration.GetSection(ConnectionOptions.Connections));
+
+            services.Configure<EmailOptions>
+                (configuration.GetSection(EmailOptions.EmailConfiguraiton));
+
+            services.Configure<Core.Options.TokenOptions>
+                (configuration.GetSection(Core.Options.TokenOptions.TokenConfiguration));
 
             var connectionOptions = configuration.GetSection(ConnectionOptions.Connections).Get<ConnectionOptions>();
             services.AddDbContext<BookAFlightAppDbContext>(dbContextOptionsBuilder =>
@@ -17,7 +21,19 @@
                     sqlServerDbContextOptionsBuilder => sqlServerDbContextOptionsBuilder.EnableRetryOnFailure(10, TimeSpan.FromSeconds(10), null));
             });
 
-            services.AddIdentity<IdentityUser, IdentityRole>().AddEntityFrameworkStores<BookAFlightAppDbContext>().AddErrorDescriber<CustomIdentityErrorDescriber>().AddDefaultTokenProviders();
+            services.AddIdentity<IdentityUser, IdentityRole>(identityOptions => 
+            {
+                identityOptions.Password.RequiredLength = 8;
+                identityOptions.Password.RequiredUniqueChars = 4;
+                identityOptions.Password.RequireUppercase = true;
+                identityOptions.Password.RequireLowercase = true;
+                identityOptions.Password.RequireDigit = true;
+                identityOptions.Password.RequireNonAlphanumeric = true;
+
+                identityOptions.SignIn.RequireConfirmedEmail = true;
+
+                identityOptions.Lockout.DefaultLockoutTimeSpan = TimeSpan.FromMinutes(5);
+            }).AddRoles<IdentityRole>().AddEntityFrameworkStores<BookAFlightAppDbContext>().AddErrorDescriber<CustomIdentityErrorDescriber>().AddDefaultTokenProviders();
 
             return services;
         }

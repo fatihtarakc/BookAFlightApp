@@ -17,9 +17,6 @@
                 return rabbitmq;
             });
 
-            services.Configure<ConnectionOptions>
-                (configuration.GetSection(ConnectionOptions.Connections));
-
             return services;
         }
     }

@@ -12,7 +12,7 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace App.DataAccess.Migrations
 {
     [DbContext(typeof(BookAFlightAppDbContext))]
-    [Migration("20260509141040_mig1")]
+    [Migration("20260513062446_mig1")]
     partial class mig1
     {
         /// <inheritdoc />
@@ -31,6 +31,11 @@ namespace App.DataAccess.Migrations
                         .ValueGeneratedOnAdd()
                         .HasColumnType("uniqueidentifier");
 
+                    b.Property<string>("AspNetUsersId")
+                        .IsRequired()
+                        .HasMaxLength(36)
+                        .HasColumnType("nvarchar");
+
                     b.Property<string>("CreatedBy")
                         .IsRequired()
                         .HasMaxLength(50)
@@ -39,7 +44,7 @@ namespace App.DataAccess.Migrations
                     b.Property<DateTime>("CreatedDate")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("datetime2")
-                        .HasDefaultValue(new DateTime(2026, 5, 9, 17, 10, 39, 619, DateTimeKind.Local).AddTicks(5878));
+                        .HasDefaultValue(new DateTime(2026, 5, 13, 9, 24, 46, 63, DateTimeKind.Local).AddTicks(2036));
 
                     b.Property<string>("DeletedBy")
                         .HasMaxLength(50)
@@ -53,9 +58,14 @@ namespace App.DataAccess.Migrations
                         .HasMaxLength(50)
                         .HasColumnType("nvarchar");
 
+                    b.Property<int>("EntityStatus")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int")
+                        .HasDefaultValue(1);
+
                     b.Property<string>("IdentityId")
                         .IsRequired()
-                        .HasMaxLength(36)
+                        .HasMaxLength(11)
                         .HasColumnType("nvarchar");
 
                     b.Property<string>("ModifiedBy")
@@ -65,12 +75,10 @@ namespace App.DataAccess.Migrations
                     b.Property<DateTime?>("ModifiedDate")
                         .HasColumnType("datetime2");
 
-                    b.Property<int>("Status")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int")
-                        .HasDefaultValue(1);
-
                     b.HasKey("Id");
+
+                    b.HasIndex("AspNetUsersId")
+                        .IsUnique();
 
                     b.HasIndex("Email")
                         .IsUnique();
@@ -80,15 +88,85 @@ namespace App.DataAccess.Migrations
 
                     b.ToTable("Admins", t =>
                         {
-                            t.HasCheckConstraint("CreatedBy_MinLength_Control", "Len(CreatedBy) >= 5");
+                            t.HasCheckConstraint("CK_Admin_AspNetUsersId_Length_Control", "Len(AspNetUsersId) = 36");
 
-                            t.HasCheckConstraint("Email_MinLength_Control", "Len(Email) >= 5");
+                            t.HasCheckConstraint("CK_Admin_CreatedBy_MinLength_Control", "Len(CreatedBy) >= 5");
 
-                            t.HasCheckConstraint("IdentityId_Length_Control", "Len(IdentityId) = 36");
+                            t.HasCheckConstraint("CK_Admin_Email_MinLength_Control", "Len(Email) >= 5");
+
+                            t.HasCheckConstraint("CK_Admin_IdentityId_Length_Control", "Len(IdentityId) = 11");
                         });
                 });
 
             modelBuilder.Entity("App.Entity.Entities.Aircraft", b =>
+                {
+                    b.Property<Guid>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<int>("AircraftStatus")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int")
+                        .HasDefaultValue(1);
+
+                    b.Property<Guid>("AirlineId")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<string>("CreatedBy")
+                        .IsRequired()
+                        .HasMaxLength(50)
+                        .HasColumnType("nvarchar");
+
+                    b.Property<DateTime>("CreatedDate")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("datetime2")
+                        .HasDefaultValue(new DateTime(2026, 5, 13, 9, 24, 46, 64, DateTimeKind.Local).AddTicks(1603));
+
+                    b.Property<string>("DeletedBy")
+                        .HasMaxLength(50)
+                        .HasColumnType("nvarchar");
+
+                    b.Property<DateTime?>("DeletedDate")
+                        .HasColumnType("datetime2");
+
+                    b.Property<int>("EntityStatus")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int")
+                        .HasDefaultValue(1);
+
+                    b.Property<Guid>("ModelId")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<string>("ModifiedBy")
+                        .HasMaxLength(50)
+                        .HasColumnType("nvarchar");
+
+                    b.Property<DateTime?>("ModifiedDate")
+                        .HasColumnType("datetime2");
+
+                    b.Property<string>("TailNumber")
+                        .IsRequired()
+                        .HasMaxLength(10)
+                        .HasColumnType("nvarchar");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("AirlineId");
+
+                    b.HasIndex("ModelId");
+
+                    b.HasIndex("TailNumber")
+                        .IsUnique();
+
+                    b.ToTable("Aircrafts", t =>
+                        {
+                            t.HasCheckConstraint("CK_Aircraft_CreatedBy_MinLength_Control", "Len(CreatedBy) >= 5");
+
+                            t.HasCheckConstraint("CK_Aircraft_TailNumber_Pattern_Control", "TailNumber not like '%[^A-Z0-9-]%' and Len(TailNumber) >= 2");
+                        });
+                });
+
+            modelBuilder.Entity("App.Entity.Entities.Airline", b =>
                 {
                     b.Property<Guid>("Id")
                         .ValueGeneratedOnAdd()
@@ -102,7 +180,7 @@ namespace App.DataAccess.Migrations
                     b.Property<DateTime>("CreatedDate")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("datetime2")
-                        .HasDefaultValue(new DateTime(2026, 5, 9, 17, 10, 39, 620, DateTimeKind.Local).AddTicks(122));
+                        .HasDefaultValue(new DateTime(2026, 5, 13, 9, 24, 46, 65, DateTimeKind.Local).AddTicks(4901));
 
                     b.Property<string>("DeletedBy")
                         .HasMaxLength(50)
@@ -111,10 +189,20 @@ namespace App.DataAccess.Migrations
                     b.Property<DateTime?>("DeletedDate")
                         .HasColumnType("datetime2");
 
-                    b.Property<bool>("IsReserved")
+                    b.Property<int>("EntityStatus")
                         .ValueGeneratedOnAdd()
-                        .HasColumnType("bit")
-                        .HasDefaultValue(false);
+                        .HasColumnType("int")
+                        .HasDefaultValue(1);
+
+                    b.Property<string>("IataCode")
+                        .IsRequired()
+                        .HasMaxLength(2)
+                        .HasColumnType("nvarchar");
+
+                    b.Property<string>("IcaoCode")
+                        .IsRequired()
+                        .HasMaxLength(3)
+                        .HasColumnType("nvarchar");
 
                     b.Property<string>("ModifiedBy")
                         .HasMaxLength(50)
@@ -123,24 +211,31 @@ namespace App.DataAccess.Migrations
                     b.Property<DateTime?>("ModifiedDate")
                         .HasColumnType("datetime2");
 
-                    b.Property<int>("Status")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int")
-                        .HasDefaultValue(1);
-
-                    b.Property<string>("Type")
+                    b.Property<string>("Name")
                         .IsRequired()
-                        .HasMaxLength(20)
+                        .HasMaxLength(50)
                         .HasColumnType("nvarchar");
 
                     b.HasKey("Id");
 
-                    b.ToTable("Aircrafts", t =>
-                        {
-                            t.HasCheckConstraint("CreatedBy_MinLength_Control", "Len(CreatedBy) >= 5")
-                                .HasName("CreatedBy_MinLength_Control1");
+                    b.HasIndex("IataCode")
+                        .IsUnique();
 
-                            t.HasCheckConstraint("Type_MinLength_Control", "Len(Type) >= 2");
+                    b.HasIndex("IcaoCode")
+                        .IsUnique();
+
+                    b.HasIndex("Name")
+                        .IsUnique();
+
+                    b.ToTable("Airlines", t =>
+                        {
+                            t.HasCheckConstraint("CK_Airline_CreatedBy_MinLength_Control", "Len(CreatedBy) >= 5");
+
+                            t.HasCheckConstraint("CK_Airline_IataCode_Pattern_Control", "IataCode not like '%[^A-Z0-9]%' and Len(IataCode) = 2");
+
+                            t.HasCheckConstraint("CK_Airline_IcaoCode_Pattern_Control", "IcaoCode not like '%[^A-Z]%' and Len(IcaoCode) = 3");
+
+                            t.HasCheckConstraint("CK_Airline_Name_Pattern_Control", "Name not like '%[^A-Za-z0-9ğüşıöçĞÜŞİÖÇ &-]%' and Len(Name) >= 2");
                         });
                 });
 
@@ -153,11 +248,6 @@ namespace App.DataAccess.Migrations
                     b.Property<string>("City")
                         .IsRequired()
                         .HasMaxLength(50)
-                        .HasColumnType("nvarchar");
-
-                    b.Property<string>("Code")
-                        .IsRequired()
-                        .HasMaxLength(4)
                         .HasColumnType("nvarchar");
 
                     b.Property<string>("Country")
@@ -173,7 +263,7 @@ namespace App.DataAccess.Migrations
                     b.Property<DateTime>("CreatedDate")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("datetime2")
-                        .HasDefaultValue(new DateTime(2026, 5, 9, 17, 10, 39, 620, DateTimeKind.Local).AddTicks(3474));
+                        .HasDefaultValue(new DateTime(2026, 5, 13, 9, 24, 46, 66, DateTimeKind.Local).AddTicks(3313));
 
                     b.Property<string>("DeletedBy")
                         .HasMaxLength(50)
@@ -181,6 +271,21 @@ namespace App.DataAccess.Migrations
 
                     b.Property<DateTime?>("DeletedDate")
                         .HasColumnType("datetime2");
+
+                    b.Property<int>("EntityStatus")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int")
+                        .HasDefaultValue(1);
+
+                    b.Property<string>("IataCode")
+                        .IsRequired()
+                        .HasMaxLength(3)
+                        .HasColumnType("nvarchar");
+
+                    b.Property<string>("IcaoCode")
+                        .IsRequired()
+                        .HasMaxLength(4)
+                        .HasColumnType("nvarchar");
 
                     b.Property<string>("ModifiedBy")
                         .HasMaxLength(50)
@@ -194,14 +299,12 @@ namespace App.DataAccess.Migrations
                         .HasMaxLength(50)
                         .HasColumnType("nvarchar");
 
-                    b.Property<int>("Status")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int")
-                        .HasDefaultValue(1);
-
                     b.HasKey("Id");
 
-                    b.HasIndex("Code")
+                    b.HasIndex("IataCode")
+                        .IsUnique();
+
+                    b.HasIndex("IcaoCode")
                         .IsUnique();
 
                     b.HasIndex("Name")
@@ -209,16 +312,17 @@ namespace App.DataAccess.Migrations
 
                     b.ToTable("Airports", t =>
                         {
-                            t.HasCheckConstraint("City_MinLength_Control", "Len(City) >= 2");
+                            t.HasCheckConstraint("CK_Airport_City_Pattern_Control", "City not like '%[^A-Za-z0-9ğüşıöçĞÜŞİÖÇ &-]%' and Len(City) >= 2");
 
-                            t.HasCheckConstraint("Code_MinLength_Control", "Len(Code) >= 2");
+                            t.HasCheckConstraint("CK_Airport_Country_Pattern_Control", "Country not like '%[^A-Za-z0-9ğüşıöçĞÜŞİÖÇ &-]%' and Len(Country) >= 2");
 
-                            t.HasCheckConstraint("Country_MinLength_Control", "Len(Country) >= 2");
+                            t.HasCheckConstraint("CK_Airport_CreatedBy_MinLength_Control", "Len(CreatedBy) >= 5");
 
-                            t.HasCheckConstraint("CreatedBy_MinLength_Control", "Len(CreatedBy) >= 5")
-                                .HasName("CreatedBy_MinLength_Control2");
+                            t.HasCheckConstraint("CK_Airport_IataCode_Pattern_Control", "IataCode not like '%[^A-Z]%' and Len(IataCode) = 3");
 
-                            t.HasCheckConstraint("Name_MinLength_Control", "Len(Name) >= 3");
+                            t.HasCheckConstraint("CK_Airport_IcaoCode_Pattern_Control", "IcaoCode not like '%[^A-Z]%' and Len(IcaoCode) = 4");
+
+                            t.HasCheckConstraint("CK_Airport_Name_Pattern_Control", "Name not like '%[^A-Za-z0-9ğüşıöçĞÜŞİÖÇ &-]%' and Len(Name) >= 3");
                         });
                 });
 
@@ -228,6 +332,14 @@ namespace App.DataAccess.Migrations
                         .ValueGeneratedOnAdd()
                         .HasColumnType("uniqueidentifier");
 
+                    b.Property<string>("AspNetUsersId")
+                        .IsRequired()
+                        .HasMaxLength(36)
+                        .HasColumnType("nvarchar");
+
+                    b.Property<DateTime>("BirthDate")
+                        .HasColumnType("datetime2");
+
                     b.Property<string>("CreatedBy")
                         .IsRequired()
                         .HasMaxLength(50)
@@ -236,7 +348,7 @@ namespace App.DataAccess.Migrations
                     b.Property<DateTime>("CreatedDate")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("datetime2")
-                        .HasDefaultValue(new DateTime(2026, 5, 9, 17, 10, 39, 620, DateTimeKind.Local).AddTicks(7738));
+                        .HasDefaultValue(new DateTime(2026, 5, 13, 9, 24, 46, 67, DateTimeKind.Local).AddTicks(1412));
 
                     b.Property<string>("DeletedBy")
                         .HasMaxLength(50)
@@ -250,9 +362,14 @@ namespace App.DataAccess.Migrations
                         .HasMaxLength(50)
                         .HasColumnType("nvarchar");
 
+                    b.Property<int>("EntityStatus")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int")
+                        .HasDefaultValue(1);
+
                     b.Property<string>("IdentityId")
                         .IsRequired()
-                        .HasMaxLength(36)
+                        .HasMaxLength(11)
                         .HasColumnType("nvarchar");
 
                     b.Property<string>("ModifiedBy")
@@ -267,23 +384,25 @@ namespace App.DataAccess.Migrations
                         .HasMaxLength(50)
                         .HasColumnType("nvarchar");
 
-                    b.Property<int>("Status")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int")
-                        .HasDefaultValue(1);
+                    b.Property<string>("PhoneNumber")
+                        .IsRequired()
+                        .HasMaxLength(16)
+                        .HasColumnType("nvarchar");
 
                     b.Property<string>("Surname")
                         .IsRequired()
                         .HasMaxLength(50)
                         .HasColumnType("nvarchar");
 
-                    b.Property<string>("VerificationCode")
-                        .IsRequired()
+                    b.Property<int>("UserStatus")
                         .ValueGeneratedOnAdd()
-                        .HasColumnType("nvarchar(max)")
-                        .HasDefaultValue("452057");
+                        .HasColumnType("int")
+                        .HasDefaultValue(1);
 
                     b.HasKey("Id");
+
+                    b.HasIndex("AspNetUsersId")
+                        .IsUnique();
 
                     b.HasIndex("Email")
                         .IsUnique();
@@ -291,21 +410,26 @@ namespace App.DataAccess.Migrations
                     b.HasIndex("IdentityId")
                         .IsUnique();
 
+                    b.HasIndex("PhoneNumber")
+                        .IsUnique();
+
                     b.ToTable("AppUsers", t =>
                         {
-                            t.HasCheckConstraint("CreatedBy_MinLength_Control", "Len(CreatedBy) >= 5")
-                                .HasName("CreatedBy_MinLength_Control3");
+                            t.HasCheckConstraint("CK_AppUser_AspNetUsersId_Length_Control", "Len(AspNetUsersId) = 36");
 
-                            t.HasCheckConstraint("Email_MinLength_Control", "Len(Email) >= 5")
-                                .HasName("Email_MinLength_Control1");
+                            t.HasCheckConstraint("CK_AppUser_BirthDate_Control", "BirthDate <= Dateadd(Year, -18, GetDate())");
 
-                            t.HasCheckConstraint("IdentityId_Length_Control", "Len(IdentityId) = 36")
-                                .HasName("IdentityId_Length_Control1");
+                            t.HasCheckConstraint("CK_AppUser_CreatedBy_MinLength_Control", "Len(CreatedBy) >= 5");
 
-                            t.HasCheckConstraint("Name_MinLength_Control", "Len(Name) >= 2")
-                                .HasName("Name_MinLength_Control1");
+                            t.HasCheckConstraint("CK_AppUser_Email_MinLength_Control", "Len(Email) >= 5");
 
-                            t.HasCheckConstraint("Surname_MinLength_Control", "Len(Surname) >= 2");
+                            t.HasCheckConstraint("CK_AppUser_IdentityId_Length_Control", "Len(IdentityId) = 11");
+
+                            t.HasCheckConstraint("CK_AppUser_Name_Pattern_Control", "Name not like '%[^A-Za-zğüşıöçĞÜŞİÖÇ -]%' and Len(Name) >= 2");
+
+                            t.HasCheckConstraint("CK_AppUser_PhoneNumber_Pattern_Control", "PhoneNumber like '+%' and PhoneNumber not like '%[^0-9+]%' and Len(PhoneNumber) >= 8");
+
+                            t.HasCheckConstraint("CK_AppUser_Surname_Pattern_Control", "Surname not like '%[^A-Za-zğüşıöçĞÜŞİÖÇ -]%' and Len(Surname) >= 2");
                         });
                 });
 
@@ -318,6 +442,11 @@ namespace App.DataAccess.Migrations
                     b.Property<Guid>("AppUserId")
                         .HasColumnType("uniqueidentifier");
 
+                    b.Property<int>("BookingStatus")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int")
+                        .HasDefaultValue(1);
+
                     b.Property<string>("CreatedBy")
                         .IsRequired()
                         .HasMaxLength(50)
@@ -326,7 +455,7 @@ namespace App.DataAccess.Migrations
                     b.Property<DateTime>("CreatedDate")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("datetime2")
-                        .HasDefaultValue(new DateTime(2026, 5, 9, 17, 10, 39, 621, DateTimeKind.Local).AddTicks(3255));
+                        .HasDefaultValue(new DateTime(2026, 5, 13, 9, 24, 46, 68, DateTimeKind.Local).AddTicks(2326));
 
                     b.Property<string>("DeletedBy")
                         .HasMaxLength(50)
@@ -334,6 +463,11 @@ namespace App.DataAccess.Migrations
 
                     b.Property<DateTime?>("DeletedDate")
                         .HasColumnType("datetime2");
+
+                    b.Property<int>("EntityStatus")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int")
+                        .HasDefaultValue(1);
 
                     b.Property<Guid>("FlightId")
                         .HasColumnType("uniqueidentifier");
@@ -356,30 +490,25 @@ namespace App.DataAccess.Migrations
                     b.Property<Guid>("SeatId")
                         .HasColumnType("uniqueidentifier");
 
-                    b.Property<int>("Status")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int")
-                        .HasDefaultValue(1);
-
                     b.HasKey("Id");
 
                     b.HasIndex("AppUserId");
-
-                    b.HasIndex("FlightId");
 
                     b.HasIndex("PnrNumber")
                         .IsUnique();
 
                     b.HasIndex("SeatId");
 
+                    b.HasIndex("FlightId", "SeatId")
+                        .IsUnique();
+
                     b.ToTable("Bookings", t =>
                         {
-                            t.HasCheckConstraint("CreatedBy_MinLength_Control", "Len(CreatedBy) >= 5")
-                                .HasName("CreatedBy_MinLength_Control4");
+                            t.HasCheckConstraint("CK_Booking_CreatedBy_MinLength_Control", "Len(CreatedBy) >= 5");
 
-                            t.HasCheckConstraint("PnrNumber_Length_Control", "Len(PnrNumber) = 6");
+                            t.HasCheckConstraint("CK_Booking_PnrNumber_Pattern_Control", "PnrNumber not like '%[^A-Z0-9]%' and Len(PnrNumber) = 6");
 
-                            t.HasCheckConstraint("PriceCheckConstraint", "Price > 0");
+                            t.HasCheckConstraint("CK_Booking_Price_Min_Control", "Price > 0");
                         });
                 });
 
@@ -392,20 +521,11 @@ namespace App.DataAccess.Migrations
                     b.Property<Guid>("AircraftId")
                         .HasColumnType("uniqueidentifier");
 
-                    b.Property<string>("Airline")
-                        .IsRequired()
-                        .HasMaxLength(50)
-                        .HasColumnType("nvarchar");
-
-                    b.Property<string>("AirlineCode")
-                        .IsRequired()
-                        .HasMaxLength(2)
-                        .HasColumnType("nvarchar");
+                    b.Property<Guid>("AirlineId")
+                        .HasColumnType("uniqueidentifier");
 
                     b.Property<DateTime>("ArrivalDateTime")
-                        .ValueGeneratedOnAddOrUpdate()
-                        .HasColumnType("datetime2")
-                        .HasComputedColumnSql("DATEADD(minute, DurationMinutes, DepartureDateTime)", true);
+                        .HasColumnType("datetime2");
 
                     b.Property<decimal>("BasePrice")
                         .HasColumnType("decimal(18,2)");
@@ -418,10 +538,12 @@ namespace App.DataAccess.Migrations
                     b.Property<DateTime>("CreatedDate")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("datetime2")
-                        .HasDefaultValue(new DateTime(2026, 5, 9, 17, 10, 39, 622, DateTimeKind.Local).AddTicks(750));
+                        .HasDefaultValue(new DateTime(2026, 5, 13, 9, 24, 46, 69, DateTimeKind.Local).AddTicks(6341));
 
                     b.Property<int>("Currency")
-                        .HasColumnType("int");
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int")
+                        .HasDefaultValue(1);
 
                     b.Property<string>("DeletedBy")
                         .HasMaxLength(50)
@@ -433,8 +555,13 @@ namespace App.DataAccess.Migrations
                     b.Property<DateTime>("DepartureDateTime")
                         .HasColumnType("datetime2");
 
-                    b.Property<int>("DurationMinutes")
-                        .HasColumnType("int");
+                    b.Property<TimeSpan>("Duration")
+                        .HasColumnType("time");
+
+                    b.Property<int>("EntityStatus")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int")
+                        .HasDefaultValue(1);
 
                     b.Property<int>("FlightStatus")
                         .ValueGeneratedOnAdd()
@@ -453,37 +580,173 @@ namespace App.DataAccess.Migrations
                         .HasMaxLength(6)
                         .HasColumnType("nvarchar");
 
-                    b.Property<Guid>("RouteId")
+                    b.Property<Guid>("ScheduleId")
                         .HasColumnType("uniqueidentifier");
-
-                    b.Property<int>("Status")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int")
-                        .HasDefaultValue(1);
 
                     b.HasKey("Id");
 
                     b.HasIndex("AircraftId");
 
+                    b.HasIndex("AirlineId");
+
                     b.HasIndex("Number")
                         .IsUnique();
 
-                    b.HasIndex("RouteId");
+                    b.HasIndex("ScheduleId");
 
                     b.ToTable("Flights", t =>
                         {
-                            t.HasCheckConstraint("AirlineCode_Length_Control", "Len(AirlineCode) = 2");
+                            t.HasCheckConstraint("CK_Flight_BasePrice_Min_Control", "BasePrice > 0");
 
-                            t.HasCheckConstraint("Airline_MinLength_Control", "Len(Airline) >= 5");
+                            t.HasCheckConstraint("CK_Flight_CreatedBy_MinLength_Control", "Len(CreatedBy) >= 5");
 
-                            t.HasCheckConstraint("BasePriceCheckConstraint", "BasePrice > 0");
+                            t.HasCheckConstraint("CK_Flight_Duration_Control", "ArrivalDateTime > DepartureDateTime");
 
-                            t.HasCheckConstraint("CreatedBy_MinLength_Control", "Len(CreatedBy) >= 5")
-                                .HasName("CreatedBy_MinLength_Control5");
+                            t.HasCheckConstraint("CK_Flight_Number_Pattern_Control", "Number not like '%[^A-Z0-9]%' and Len(Number) >= 3");
+                        });
+                });
 
-                            t.HasCheckConstraint("DurationMinutesCheckConstraint", "DurationMinutes > 0");
+            modelBuilder.Entity("App.Entity.Entities.Manufacturer", b =>
+                {
+                    b.Property<Guid>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("uniqueidentifier");
 
-                            t.HasCheckConstraint("Number_MinLength_Control", "Len(Number) >= 3");
+                    b.Property<string>("Country")
+                        .IsRequired()
+                        .HasMaxLength(100)
+                        .HasColumnType("nvarchar");
+
+                    b.Property<string>("CreatedBy")
+                        .IsRequired()
+                        .HasMaxLength(50)
+                        .HasColumnType("nvarchar");
+
+                    b.Property<DateTime>("CreatedDate")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("datetime2")
+                        .HasDefaultValue(new DateTime(2026, 5, 13, 9, 24, 46, 71, DateTimeKind.Local).AddTicks(5849));
+
+                    b.Property<string>("DeletedBy")
+                        .HasMaxLength(50)
+                        .HasColumnType("nvarchar");
+
+                    b.Property<DateTime?>("DeletedDate")
+                        .HasColumnType("datetime2");
+
+                    b.Property<int>("EntityStatus")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int")
+                        .HasDefaultValue(1);
+
+                    b.Property<string>("ModifiedBy")
+                        .HasMaxLength(50)
+                        .HasColumnType("nvarchar");
+
+                    b.Property<DateTime?>("ModifiedDate")
+                        .HasColumnType("datetime2");
+
+                    b.Property<string>("Name")
+                        .IsRequired()
+                        .HasMaxLength(100)
+                        .HasColumnType("nvarchar");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("Name")
+                        .IsUnique();
+
+                    b.ToTable("Manufacturers", t =>
+                        {
+                            t.HasCheckConstraint("CK_Manufacturer_Country_Pattern_Control", "Country not like '%[^A-Za-zğüşıöçĞÜŞİÖÇ -]%' and Len(Country) >= 4");
+
+                            t.HasCheckConstraint("CK_Manufacturer_CreatedBy_MinLength_Control", "Len(CreatedBy) >= 5");
+
+                            t.HasCheckConstraint("CK_Manufacturer_Name_Pattern_Control", "Name not like '%[^A-Za-z0-9ğüşıöçĞÜŞİÖÇ .&-]%' and Len(Name) >= 2");
+                        });
+                });
+
+            modelBuilder.Entity("App.Entity.Entities.Model", b =>
+                {
+                    b.Property<Guid>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<int>("BodyType")
+                        .HasColumnType("int");
+
+                    b.Property<string>("CreatedBy")
+                        .IsRequired()
+                        .HasMaxLength(50)
+                        .HasColumnType("nvarchar");
+
+                    b.Property<DateTime>("CreatedDate")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("datetime2")
+                        .HasDefaultValue(new DateTime(2026, 5, 13, 9, 24, 46, 72, DateTimeKind.Local).AddTicks(1024));
+
+                    b.Property<string>("DeletedBy")
+                        .HasMaxLength(50)
+                        .HasColumnType("nvarchar");
+
+                    b.Property<DateTime?>("DeletedDate")
+                        .HasColumnType("datetime2");
+
+                    b.Property<int>("EntityStatus")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int")
+                        .HasDefaultValue(1);
+
+                    b.Property<string>("IataCode")
+                        .IsRequired()
+                        .HasMaxLength(3)
+                        .HasColumnType("nvarchar");
+
+                    b.Property<string>("IcaoCode")
+                        .IsRequired()
+                        .HasMaxLength(4)
+                        .HasColumnType("nvarchar");
+
+                    b.Property<Guid>("ManufacturerId")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<string>("ModifiedBy")
+                        .HasMaxLength(50)
+                        .HasColumnType("nvarchar");
+
+                    b.Property<DateTime?>("ModifiedDate")
+                        .HasColumnType("datetime2");
+
+                    b.Property<string>("Name")
+                        .IsRequired()
+                        .HasMaxLength(100)
+                        .HasColumnType("nvarchar");
+
+                    b.Property<int>("SeatCapacity")
+                        .HasColumnType("int");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("IcaoCode")
+                        .IsUnique();
+
+                    b.HasIndex("ManufacturerId", "IataCode")
+                        .IsUnique();
+
+                    b.HasIndex("ManufacturerId", "Name")
+                        .IsUnique();
+
+                    b.ToTable("Models", t =>
+                        {
+                            t.HasCheckConstraint("CK_Model_CreatedBy_MinLength_Control", "Len(CreatedBy) >= 5");
+
+                            t.HasCheckConstraint("CK_Model_IataCode_Pattern_Control", "IataCode not like '%[^A-Z0-9]%' and Len(IataCode) = 3");
+
+                            t.HasCheckConstraint("CK_Model_IcaoCode_Pattern_Control", "IcaoCode not like '%[^A-Z0-9]%' and Len(IcaoCode) >= 2");
+
+                            t.HasCheckConstraint("CK_Model_Name_Pattern_Control", "Name not like '%[^A-Za-z0-9ğüşıöçĞÜŞİÖÇ .&-]%' and Len(Name) >= 2");
+
+                            t.HasCheckConstraint("CK_Model_SeatCapacity_Range_Control", "SeatCapacity between 1 and 1000");
                         });
                 });
 
@@ -504,7 +767,7 @@ namespace App.DataAccess.Migrations
                     b.Property<DateTime>("CreatedDate")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("datetime2")
-                        .HasDefaultValue(new DateTime(2026, 5, 9, 17, 10, 39, 623, DateTimeKind.Local).AddTicks(2481));
+                        .HasDefaultValue(new DateTime(2026, 5, 13, 9, 24, 46, 73, DateTimeKind.Local).AddTicks(833));
 
                     b.Property<string>("DeletedBy")
                         .HasMaxLength(50)
@@ -516,10 +779,21 @@ namespace App.DataAccess.Migrations
                     b.Property<Guid>("DepartureAirportId")
                         .HasColumnType("uniqueidentifier");
 
-                    b.Property<string>("DepartureArrivalAirportCode")
+                    b.Property<string>("DepartureArrivalIataCode")
                         .IsRequired()
-                        .HasMaxLength(10)
+                        .HasMaxLength(7)
                         .HasColumnType("nvarchar");
+
+                    b.Property<decimal>("DistanceNauticalMiles")
+                        .HasColumnType("decimal(18,2)");
+
+                    b.Property<int>("EntityStatus")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int")
+                        .HasDefaultValue(1);
+
+                    b.Property<TimeSpan>("EstimatedDuration")
+                        .HasColumnType("time");
 
                     b.Property<string>("ModifiedBy")
                         .HasMaxLength(50)
@@ -528,26 +802,106 @@ namespace App.DataAccess.Migrations
                     b.Property<DateTime?>("ModifiedDate")
                         .HasColumnType("datetime2");
 
-                    b.Property<int>("Status")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int")
-                        .HasDefaultValue(1);
-
                     b.HasKey("Id");
 
                     b.HasIndex("ArrivalAirportId");
 
-                    b.HasIndex("DepartureAirportId");
+                    b.HasIndex("DepartureArrivalIataCode")
+                        .IsUnique();
 
-                    b.HasIndex("DepartureArrivalAirportCode")
+                    b.HasIndex("DepartureAirportId", "ArrivalAirportId")
                         .IsUnique();
 
                     b.ToTable("Routes", t =>
                         {
-                            t.HasCheckConstraint("CreatedBy_MinLength_Control", "Len(CreatedBy) >= 5")
-                                .HasName("CreatedBy_MinLength_Control6");
+                            t.HasCheckConstraint("CK_Route_CreatedBy_MinLength_Control", "Len(CreatedBy) >= 5");
 
-                            t.HasCheckConstraint("DepartureArrivalAirportCode_MinLength_Control", "Len(DepartureArrivalAirportCode) >= 4");
+                            t.HasCheckConstraint("CK_Route_DepartureArrivalIataCode_Pattern_Control", "DepartureArrivalIataCode not like '%[^A-Z-]%' and Len(DepartureArrivalIataCode) = 7 and Substring(DepartureArrivalIataCode, 4, 1) = '-'");
+
+                            t.HasCheckConstraint("CK_Route_DifferentRoute_Control", "DepartureAirportId <> ArrivalAirportId");
+
+                            t.HasCheckConstraint("CK_Route_DistanceNauticalMiles_Min_Control", "DistanceNauticalMiles > 0");
+
+                            t.HasCheckConstraint("CK_Route_EstimatedDuration_Control", "EstimatedDuration > Cast('00:00:00' as time)");
+                        });
+                });
+
+            modelBuilder.Entity("App.Entity.Entities.Schedule", b =>
+                {
+                    b.Property<Guid>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<string>("Code")
+                        .IsRequired()
+                        .HasMaxLength(20)
+                        .HasColumnType("nvarchar");
+
+                    b.Property<string>("CreatedBy")
+                        .IsRequired()
+                        .HasMaxLength(50)
+                        .HasColumnType("nvarchar");
+
+                    b.Property<DateTime>("CreatedDate")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("datetime2")
+                        .HasDefaultValue(new DateTime(2026, 5, 13, 9, 24, 46, 77, DateTimeKind.Local).AddTicks(7340));
+
+                    b.Property<int>("DaysOfWeek")
+                        .HasColumnType("int");
+
+                    b.Property<string>("DeletedBy")
+                        .HasMaxLength(50)
+                        .HasColumnType("nvarchar");
+
+                    b.Property<DateTime?>("DeletedDate")
+                        .HasColumnType("datetime2");
+
+                    b.Property<TimeSpan>("DepartureTime")
+                        .HasColumnType("time");
+
+                    b.Property<int>("EntityStatus")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int")
+                        .HasDefaultValue(1);
+
+                    b.Property<string>("ModifiedBy")
+                        .HasMaxLength(50)
+                        .HasColumnType("nvarchar");
+
+                    b.Property<DateTime?>("ModifiedDate")
+                        .HasColumnType("datetime2");
+
+                    b.Property<Guid>("RouteId")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<string>("TimeZone")
+                        .IsRequired()
+                        .HasMaxLength(50)
+                        .HasColumnType("nvarchar");
+
+                    b.Property<DateTime>("ValidFrom")
+                        .HasColumnType("datetime2");
+
+                    b.Property<DateTime?>("ValidTo")
+                        .HasColumnType("datetime2");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("Code")
+                        .IsUnique();
+
+                    b.HasIndex("RouteId");
+
+                    b.ToTable("Schedules", t =>
+                        {
+                            t.HasCheckConstraint("CK_Schedule_Code_Pattern_Control", "Code not like '%[^A-Za-z0-9ğüşıöçĞÜŞİÖÇ .&-]%' and Len(Code) >= 3");
+
+                            t.HasCheckConstraint("CK_Schedule_CreatedBy_MinLength_Control", "Len(CreatedBy) >= 5");
+
+                            t.HasCheckConstraint("CK_Schedule_DepartureTime_Control", "DepartureTime >= '00:00:00' and DepartureTime <= '23:59:59'");
+
+                            t.HasCheckConstraint("CK_Schedule_ValidFromValidTo_Control", "ValidTo is null or ValidTo > ValidFrom");
                         });
                 });
 
@@ -560,11 +914,6 @@ namespace App.DataAccess.Migrations
                     b.Property<Guid>("AircraftId")
                         .HasColumnType("uniqueidentifier");
 
-                    b.Property<string>("AircraftIdSeatNumberColumn")
-                        .IsRequired()
-                        .HasMaxLength(40)
-                        .HasColumnType("nvarchar");
-
                     b.Property<string>("CreatedBy")
                         .IsRequired()
                         .HasMaxLength(50)
@@ -573,7 +922,7 @@ namespace App.DataAccess.Migrations
                     b.Property<DateTime>("CreatedDate")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("datetime2")
-                        .HasDefaultValue(new DateTime(2026, 5, 9, 17, 10, 39, 626, DateTimeKind.Local).AddTicks(4926));
+                        .HasDefaultValue(new DateTime(2026, 5, 13, 9, 24, 46, 78, DateTimeKind.Local).AddTicks(4242));
 
                     b.Property<string>("DeletedBy")
                         .HasMaxLength(50)
@@ -582,10 +931,10 @@ namespace App.DataAccess.Migrations
                     b.Property<DateTime?>("DeletedDate")
                         .HasColumnType("datetime2");
 
-                    b.Property<bool>("IsReserved")
+                    b.Property<int>("EntityStatus")
                         .ValueGeneratedOnAdd()
-                        .HasColumnType("bit")
-                        .HasDefaultValue(false);
+                        .HasColumnType("int")
+                        .HasDefaultValue(1);
 
                     b.Property<string>("ModifiedBy")
                         .HasMaxLength(50)
@@ -597,29 +946,105 @@ namespace App.DataAccess.Migrations
                     b.Property<int>("Number")
                         .HasColumnType("int");
 
+                    b.Property<int>("SeatClass")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int")
+                        .HasDefaultValue(1);
+
                     b.Property<int>("SeatColumn")
                         .HasColumnType("int");
 
-                    b.Property<int>("Status")
+                    b.HasKey("Id");
+
+                    b.HasIndex("AircraftId", "Number", "SeatColumn")
+                        .IsUnique();
+
+                    b.ToTable("Seats", t =>
+                        {
+                            t.HasCheckConstraint("CK_Seat_CreatedBy_MinLength_Control", "Len(CreatedBy) >= 5");
+
+                            t.HasCheckConstraint("CK_Seat_Number_Control", "Number >= 1 And Number <= 150");
+                        });
+                });
+
+            modelBuilder.Entity("App.Entity.Entities.VerificationCode", b =>
+                {
+                    b.Property<Guid>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<Guid>("AppUserId")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<int>("AttemptCount")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int")
+                        .HasDefaultValue(0);
+
+                    b.Property<string>("Code")
+                        .IsRequired()
+                        .HasMaxLength(6)
+                        .HasColumnType("nvarchar");
+
+                    b.Property<string>("CreatedBy")
+                        .IsRequired()
+                        .HasMaxLength(50)
+                        .HasColumnType("nvarchar");
+
+                    b.Property<DateTime>("CreatedDate")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("datetime2")
+                        .HasDefaultValue(new DateTime(2026, 5, 13, 9, 24, 46, 79, DateTimeKind.Local).AddTicks(2205));
+
+                    b.Property<string>("DeletedBy")
+                        .HasMaxLength(50)
+                        .HasColumnType("nvarchar");
+
+                    b.Property<DateTime?>("DeletedDate")
+                        .HasColumnType("datetime2");
+
+                    b.Property<int>("EntityStatus")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int")
+                        .HasDefaultValue(1);
+
+                    b.Property<DateTime>("ExpirationDate")
+                        .HasColumnType("datetime2");
+
+                    b.Property<string>("ModifiedBy")
+                        .HasMaxLength(50)
+                        .HasColumnType("nvarchar");
+
+                    b.Property<DateTime?>("ModifiedDate")
+                        .HasColumnType("datetime2");
+
+                    b.Property<int>("VerificationCodeChannel")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int")
+                        .HasDefaultValue(1);
+
+                    b.Property<int>("VerificationCodePurpose")
+                        .HasColumnType("int");
+
+                    b.Property<int>("VerificationCodeStatus")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("int")
                         .HasDefaultValue(1);
 
                     b.HasKey("Id");
 
-                    b.HasIndex("AircraftId");
-
-                    b.HasIndex("AircraftIdSeatNumberColumn")
+                    b.HasIndex("AppUserId", "Code", "VerificationCodeStatus", "CreatedDate")
                         .IsUnique();
 
-                    b.ToTable("Seats", t =>
+                    b.ToTable("VerificationCodes", t =>
                         {
-                            t.HasCheckConstraint("AircraftIdSeatNumberColumn_MinLength_Control", "Len(AircraftIdSeatNumberColumn) >= 38");
+                            t.HasCheckConstraint("CK_VerificationCode_AttemptCount_Control", "AttemptCount >= 0 and AttemptCount <= 3");
 
-                            t.HasCheckConstraint("CreatedBy_MinLength_Control", "Len(CreatedBy) >= 5")
-                                .HasName("CreatedBy_MinLength_Control7");
+                            t.HasCheckConstraint("CK_VerificationCode_Code_Pattern_Control", "Code not like '%[^0-9]%' and Len(Code) = 6");
 
-                            t.HasCheckConstraint("NumberCheckConstraint", "Number >= 1 And Number <= 150");
+                            t.HasCheckConstraint("CK_VerificationCode_CreatedBy_MinLength_Control", "Len(CreatedBy) >= 5");
+
+                            t.HasCheckConstraint("CK_VerificationCode_ExpirationDate_Control", "ExpirationDate > CreatedDate");
                         });
                 });
 
@@ -749,8 +1174,7 @@ namespace App.DataAccess.Migrations
 
                     b.ToTable("AspNetUsers", null, t =>
                         {
-                            t.HasCheckConstraint("Email_MinLength_Control", "Len(Email) >= 5")
-                                .HasName("Email_MinLength_Control2");
+                            t.HasCheckConstraint("Email_MinLength_Control", "Len(Email) >= 5");
 
                             t.HasCheckConstraint("NormalizedEmail_MinLength_Control", "Len(NormalizedEmail) >= 5");
 
@@ -841,6 +1265,25 @@ namespace App.DataAccess.Migrations
                     b.ToTable("AspNetUserTokens", (string)null);
                 });
 
+            modelBuilder.Entity("App.Entity.Entities.Aircraft", b =>
+                {
+                    b.HasOne("App.Entity.Entities.Airline", "Airline")
+                        .WithMany("Aircrafts")
+                        .HasForeignKey("AirlineId")
+                        .OnDelete(DeleteBehavior.Restrict)
+                        .IsRequired();
+
+                    b.HasOne("App.Entity.Entities.Model", "Model")
+                        .WithMany("Aircrafts")
+                        .HasForeignKey("ModelId")
+                        .OnDelete(DeleteBehavior.Restrict)
+                        .IsRequired();
+
+                    b.Navigation("Airline");
+
+                    b.Navigation("Model");
+                });
+
             modelBuilder.Entity("App.Entity.Entities.Booking", b =>
                 {
                     b.HasOne("App.Entity.Entities.AppUser", "AppUser")
@@ -876,15 +1319,34 @@ namespace App.DataAccess.Migrations
                         .OnDelete(DeleteBehavior.Restrict)
                         .IsRequired();
 
-                    b.HasOne("App.Entity.Entities.Route", "Route")
+                    b.HasOne("App.Entity.Entities.Airline", "Airline")
                         .WithMany("Flights")
-                        .HasForeignKey("RouteId")
+                        .HasForeignKey("AirlineId")
+                        .OnDelete(DeleteBehavior.Restrict)
+                        .IsRequired();
+
+                    b.HasOne("App.Entity.Entities.Schedule", "Schedule")
+                        .WithMany("Flights")
+                        .HasForeignKey("ScheduleId")
                         .OnDelete(DeleteBehavior.Restrict)
                         .IsRequired();
 
                     b.Navigation("Aircraft");
 
-                    b.Navigation("Route");
+                    b.Navigation("Airline");
+
+                    b.Navigation("Schedule");
+                });
+
+            modelBuilder.Entity("App.Entity.Entities.Model", b =>
+                {
+                    b.HasOne("App.Entity.Entities.Manufacturer", "Manufacturer")
+                        .WithMany("Models")
+                        .HasForeignKey("ManufacturerId")
+                        .OnDelete(DeleteBehavior.Restrict)
+                        .IsRequired();
+
+                    b.Navigation("Manufacturer");
                 });
 
             modelBuilder.Entity("App.Entity.Entities.Route", b =>
@@ -906,6 +1368,17 @@ namespace App.DataAccess.Migrations
                     b.Navigation("DepartureAirport");
                 });
 
+            modelBuilder.Entity("App.Entity.Entities.Schedule", b =>
+                {
+                    b.HasOne("App.Entity.Entities.Route", "Route")
+                        .WithMany("Schedules")
+                        .HasForeignKey("RouteId")
+                        .OnDelete(DeleteBehavior.Restrict)
+                        .IsRequired();
+
+                    b.Navigation("Route");
+                });
+
             modelBuilder.Entity("App.Entity.Entities.Seat", b =>
                 {
                     b.HasOne("App.Entity.Entities.Aircraft", "Aircraft")
@@ -915,6 +1388,17 @@ namespace App.DataAccess.Migrations
                         .IsRequired();
 
                     b.Navigation("Aircraft");
+                });
+
+            modelBuilder.Entity("App.Entity.Entities.VerificationCode", b =>
+                {
+                    b.HasOne("App.Entity.Entities.AppUser", "AppUser")
+                        .WithMany("VerificationCodes")
+                        .HasForeignKey("AppUserId")
+                        .OnDelete(DeleteBehavior.Restrict)
+                        .IsRequired();
+
+                    b.Navigation("AppUser");
                 });
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRoleClaim<string>", b =>
@@ -975,6 +1459,13 @@ namespace App.DataAccess.Migrations
                     b.Navigation("Seats");
                 });
 
+            modelBuilder.Entity("App.Entity.Entities.Airline", b =>
+                {
+                    b.Navigation("Aircrafts");
+
+                    b.Navigation("Flights");
+                });
+
             modelBuilder.Entity("App.Entity.Entities.Airport", b =>
                 {
                     b.Navigation("ArrivalRoutes");
@@ -985,6 +1476,8 @@ namespace App.DataAccess.Migrations
             modelBuilder.Entity("App.Entity.Entities.AppUser", b =>
                 {
                     b.Navigation("Bookings");
+
+                    b.Navigation("VerificationCodes");
                 });
 
             modelBuilder.Entity("App.Entity.Entities.Flight", b =>
@@ -992,7 +1485,22 @@ namespace App.DataAccess.Migrations
                     b.Navigation("Bookings");
                 });
 
+            modelBuilder.Entity("App.Entity.Entities.Manufacturer", b =>
+                {
+                    b.Navigation("Models");
+                });
+
+            modelBuilder.Entity("App.Entity.Entities.Model", b =>
+                {
+                    b.Navigation("Aircrafts");
+                });
+
             modelBuilder.Entity("App.Entity.Entities.Route", b =>
+                {
+                    b.Navigation("Schedules");
+                });
+
+            modelBuilder.Entity("App.Entity.Entities.Schedule", b =>
                 {
                     b.Navigation("Flights");
                 });

@@ -7,7 +7,7 @@
             base.Configure(builder);
 
             builder.Property(auditableBaseEntity => auditableBaseEntity.CreatedBy).HasColumnType("nvarchar").HasMaxLength(50).IsRequired();
-            builder.ToTable(auditableBaseEntity => auditableBaseEntity.HasCheckConstraint("CK_AuditableBaseEntity_CreatedBy_MinLength_Control", "Len(CreatedBy) >= 5"));
+            builder.ToTable(auditableBaseEntity => auditableBaseEntity.HasCheckConstraint($"CK_{typeof(T).Name}_CreatedBy_MinLength_Control", "Len(CreatedBy) >= 5"));
 
             builder.Property(auditableBaseEntity => auditableBaseEntity.CreatedDate).HasDefaultValue(DateTime.Now);
 

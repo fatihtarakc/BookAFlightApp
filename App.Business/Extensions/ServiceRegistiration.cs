@@ -18,6 +18,7 @@
             services.AddScoped<IRouteService, RouteService>();
             services.AddScoped<IScheduleService, ScheduleService>();
             services.AddScoped<ISeatService, SeatService>();
+            services.AddScoped<ITokenService, TokenService>();
             services.AddScoped<IVerificationCodeService, VerificationCodeService>();
 
             services.Configure<EmailOptions>

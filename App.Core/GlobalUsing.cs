@@ -6,6 +6,7 @@ global using Microsoft.EntityFrameworkCore.Storage;
 global using System.Linq.Expressions;
 global using System.Text;
 
+
 global using App.Core.Entities.Abstract;
 global using App.Core.Entities.Abstract.Interfaces;
 global using App.Core.Enums;
